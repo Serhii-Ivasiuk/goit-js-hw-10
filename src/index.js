@@ -95,7 +95,9 @@ function renderCountryCard(countriesArray) {
           <li class="country-info__list-item">
             <p class="country-info__property">
               Languages:
-              <span class="country-info__value">${languages}</span>
+              <span class="country-info__value">
+                ${Object.values(languages).join(', ')}
+              </span>
             </p>
           </li>
         </ul>
