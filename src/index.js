@@ -4,8 +4,10 @@ import Notiflix from 'notiflix';
 import { fetchCountries } from './js/fetch-countries';
 
 const DEBOUNCE_DELAY = 300;
-const NOTIFY_INFO = 'info';
-const NOTIFY_FAILURE = 'failure';
+const notificationType = {
+  INFO: 'info',
+  FAILURE: 'failure',
+};
 
 const refs = {
   input: document.querySelector('#search-box'),
@@ -30,13 +32,19 @@ function handleInput(e) {
     })
     .catch(() => {
       clearMarkup();
-      notify(NOTIFY_FAILURE);
+      showNotification(
+        notificationType.FAILURE,
+        'Oops, there is no country with that name'
+      );
     });
 }
 
 function renderMarkup(countries) {
   if (countries.length > 10) {
-    notify(NOTIFY_INFO);
+    showNotification(
+      notificationType.INFO,
+      'Too many matches found. Please enter a more specific name.'
+    );
     return;
   }
 
@@ -111,14 +119,6 @@ function clearMarkup() {
   refs.info.innerHTML = '';
 }
 
-function notify(type) {
-  if (type === 'info') {
-    return Notiflix.Notify.info(
-      'Too many matches found. Please enter a more specific name.'
-    );
-  }
-
-  if (type === 'failure') {
-    return Notiflix.Notify.failure('Oops, there is no country with that name');
-  }
+function showNotification(type, message) {
+  return Notiflix.Notify[type](message);
 }
